@@ -2,3 +2,20 @@ Metaheuristic bat-like algorithm
 ================================
 
 Research project currently only for education purposes
+
+
+Installation
+------------
+
+
+    git clone git://github.com/marcinn/metabat.git
+    cd metabat
+    make
+
+
+Run test suite
+--------------
+
+    ./run_tests.py
+
+
