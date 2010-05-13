@@ -39,3 +39,31 @@ class MetabatCoreTestCase(unittest.TestCase):
             self.assertEqual(actor.frequency, Microbat.MAX_FREQUENCY)
         except ValueError:
             self.fail('Cannot set MAX_FREQUENCY')
+
+
+        # test loudness property
+
+        try:
+            min, max = actor.loudness_range
+            actor.loudness = min
+            actor.loudness = max
+            actor.loudness = min+1
+            actor.loudness = max-1
+        except ValueError:
+            self.fail('Cannot set loudness in defined range')
+
+        min, max = actor.loudness_range
+
+        try:
+            actor.loudness = min-1
+            self.fail('Loudness limiter failed')
+        except ValueError:
+            pass
+
+        try:
+            actor.loudness = max+1
+            self.fail('Loudness limiter failed')
+        except ValueError:
+            pass
+
+

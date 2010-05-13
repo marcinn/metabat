@@ -20,7 +20,7 @@ class Microbat(object):
         # loudness 
         self.loudness_range = loudness_range or (self.LOUDNESS_MIN, 
                 self.LOUDNESS_MAX)
-        self.loudness = self.loudness_range[0] # min loudness at init
+        self._loudness = self.loudness_range[0] # min loudness at init
 
         # pulse frequency
         self._frequency = 0
@@ -33,7 +33,15 @@ class Microbat(object):
 
     def _get_frequency(self):
         return self._frequency
-
     frequency = property(_get_frequency, _set_frequency)
 
+    def _set_loudness(self, loudness):
+        if loudness<self.loudness_range[0] or \
+                loudness>self.loudness_range[1]:
+            raise ValueError('Invalid loudness')
+        self._loudness = loudness
+
+    def _get_loudness(self):
+        return self._loudness
+    loudness = property(_get_loudness, _set_loudness)
 
