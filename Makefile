@@ -5,6 +5,7 @@ help:
 	@echo "  build - run buildout on current code"
 	@echo "  clean - rm py[co] files"
 	@echo "  dist - rm eggs, parts, downloads, bootstrap.py"
+	@echo "  test - run test suite"
 
 
 bootstrap.py :
@@ -21,3 +22,6 @@ clean:
 
 dist: clean
 	rm -rf bin develop-eggs eggs parts .installed.cfg downloads bootstrap.py
+
+test:
+	./bin/python run_tests.py

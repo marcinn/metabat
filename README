@@ -16,6 +16,6 @@ Installation
 Run test suite
 --------------
 
-    ./run_tests.py
+    make test
 
 
