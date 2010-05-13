@@ -7,12 +7,13 @@ class Microbat(object):
 
     MAX_FREQUENCY = 10000
 
-    def __init__(self, position, loudness_range=None):
+    def __init__(self, position, velocity, loudness_range=None):
         """
         initialize micro-bat properties
 
         position: initial value of any comparable type 
                   with support for arithmetic operations
+        velocity: initial velocity
         loudness_range: (min, max) tuple
         """
 
@@ -31,7 +32,7 @@ class Microbat(object):
         self.position = position
 
         # velocity
-        self.velocity = 0.0
+        self.velocity = velocity
 
 
     def _set_frequency(self, freq):
