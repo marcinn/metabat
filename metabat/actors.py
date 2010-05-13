@@ -1,4 +1,4 @@
-
+import random
 
 class Microbat(object):
 
@@ -53,4 +53,20 @@ class Microbat(object):
     def _get_loudness(self):
         return self._loudness
     loudness = property(_get_loudness, _set_loudness)
+
+    def __repr__(self):
+        return '(%s) x=%s, v=%s, f=%s, l=%s, p=%s' % (
+                self.__class__.__name__,
+                self.position, self.velocity, self._frequency,
+                self._loudness, self.pulse_rate)
+
+
+def create_population(n, initial_position, species=Microbat):
+    """
+    create population of n-bats with default position pos
+    randomized in [0,radius] range
+    """
+
+    return [species(position=initial_position, velocity=initial_position*0) \
+            for i in xrange(0, n)]
 
