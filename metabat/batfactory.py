@@ -7,8 +7,11 @@ class BatFactory (object):
         self._min_freq = min_freq
         self._max_freq = max_freq
 
-    def __iter(self):
+    def __iter__(self):
         pass
 
     def __len(self):
+        pass
+
+    def next(self):
         pass
