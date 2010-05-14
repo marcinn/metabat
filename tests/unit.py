@@ -3,6 +3,7 @@ Unit tests module
 """
 
 import unittest
+import math
 
 class MetabatCoreTestCase(unittest.TestCase):
     """
@@ -14,29 +15,27 @@ class MetabatCoreTestCase(unittest.TestCase):
 
         from metabat.actors import Microbat
 
-        actor = Microbat()
-        self.assertEqual(actor.frequency, 0)
-        self.assertEqual(actor.pulse_rate, 0.0)
+        actor = Microbat(0,0)
         self.assertEqual(actor.loudness_range, 
                 (Microbat.LOUDNESS_MIN, Microbat.LOUDNESS_MAX))
 
         # test frequency property
         try:
-            actor.frequency = Microbat.MAX_FREQUENCY-1
-            self.assertEqual(actor.frequency, Microbat.MAX_FREQUENCY-1)
+            actor.frequency = Microbat.FREQUENCY_MAX-1
+            self.assertEqual(actor.frequency, Microbat.FREQUENCY_MAX-1)
         except ValueError:
             self.fail('Freqency setter failed')
 
         try:
-            actor.frequency = Microbat.MAX_FREQUENCY+1
+            actor.frequency = Microbat.FREQUENCY_MAX+1
             self.fail('Frequency limiter failed')
         except ValueError:
             pass
 
 
         try:
-            actor.frequency = Microbat.MAX_FREQUENCY
-            self.assertEqual(actor.frequency, Microbat.MAX_FREQUENCY)
+            actor.frequency = Microbat.FREQUENCY_MAX
+            self.assertEqual(actor.frequency, Microbat.FREQUENCY_MAX)
         except ValueError:
             self.fail('Cannot set MAX_FREQUENCY')
 
@@ -65,5 +64,24 @@ class MetabatCoreTestCase(unittest.TestCase):
             self.fail('Loudness limiter failed')
         except ValueError:
             pass
+
+
+
+class MetabatPopulation(unittest.TestCase):
+
+    def setUp(self):
+        from metabat import population
+        from metabat.actors import create_population
+
+        # funkcja wartosciujaca nietoperza
+        self.sol = lambda x: math.sin(x.position*math.pi/180.0)
+        self.p = population.Population(create_population(10,10),
+                (0,100), self.sol)
+
+    def test_best_solution(self):
+        print self.p.best_solution
+        for i in xrange(0,100):
+            self.p.next()
+        print self.p.best_solution
 
 

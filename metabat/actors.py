@@ -5,7 +5,8 @@ class Microbat(object):
     LOUDNESS_MIN = 0
     LOUDNESS_MAX = 100
 
-    MAX_FREQUENCY = 10000
+    FREQUENCY_MIN = 0
+    FREQUENCY_MAX = 100
 
     def __init__(self, position, velocity, loudness_range=None):
         """
@@ -18,15 +19,15 @@ class Microbat(object):
         """
 
         # pulse emission rate in [0,1] range
-        self.pulse_rate = 0.0
+        self.pulse_rate = random.random()
 
         # loudness 
         self.loudness_range = loudness_range or (self.LOUDNESS_MIN, 
                 self.LOUDNESS_MAX)
-        self._loudness = self.loudness_range[0] # min loudness at init
+        self._loudness = random.randint(*(self.loudness_range))
 
         # pulse frequency
-        self._frequency = 0
+        self._frequency = self.FREQUENCY_MIN
         
         # position
         self.position = position
@@ -36,7 +37,7 @@ class Microbat(object):
 
 
     def _set_frequency(self, freq):
-        if freq<0 or freq>self.MAX_FREQUENCY:
+        if freq<self.FREQUENCY_MIN or freq>self.FREQUENCY_MAX:
             raise ValueError('Invalid frequency')
         self._frequency = freq
 
@@ -53,6 +54,14 @@ class Microbat(object):
     def _get_loudness(self):
         return self._loudness
     loudness = property(_get_loudness, _set_loudness)
+
+    def fly(self):
+        """
+        recalculate
+        calculate new position and move
+        Xt = Xt-1 + Vt
+        """
+        self.position = self.position + self.velocity
 
     def __repr__(self):
         return '(%s) x=%s, v=%s, f=%s, l=%s, p=%s' % (
