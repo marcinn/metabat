@@ -29,7 +29,7 @@ class Population(object):
         for bat in self.bats:
             bat.frequency = self.fmin + (self.fmax - self.fmin)*b
             bat.velocity = bat.velocity + (bat.position - self.best_solution)*bat.frequency
-            bat.position = bat.position + bat.velocity
+            #bat.position = bat.position + bat.velocity
             bat.fly()
 
         for bat in self.bats:
