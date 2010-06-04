@@ -35,6 +35,9 @@ class Microbat(object):
         # velocity
         self.velocity = velocity
 
+        # best result for this bat (position, value) tuple or None
+        self.pbest = None
+
 
     def _set_frequency(self, freq):
         if freq<self.FREQUENCY_MIN or freq>self.FREQUENCY_MAX:

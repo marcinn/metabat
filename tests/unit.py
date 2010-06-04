@@ -73,15 +73,28 @@ class MetabatPopulation(unittest.TestCase):
         from metabat import population
         from metabat.actors import create_population
 
+        def observe(population, f):
+            def wrap():
+                print "Iteration %s" % population.step
+                for i, bat in enumerate(population.bats):
+                    print "  [%d] = %s" % (i, bat)
+                f()
+                print "  gbest: %s" % str(population.gbest)
+                raw_input()
+            return wrap
+
+
         # funkcja wartosciujaca nietoperza
-        self.sol = lambda x: math.sin(x.position*math.pi/180.0)
+        #self.sol = lambda x: math.sin(x.position*math.pi/180.0)
+        self.sol = lambda x:math.cos(x.position) * math.exp(math.sin(x.position)) * math.sin(x.position)  / 1.5
         self.p = population.Population(create_population(10,10),
                 (0,100), self.sol)
+        self.p.next = observe(self.p, self.p.next)
 
     def test_best_solution(self):
-        print self.p.best_solution
+        print self.p.gbest
         for i in xrange(0,100):
             self.p.next()
-        print self.p.best_solution
+        print self.p.gbest
 
 

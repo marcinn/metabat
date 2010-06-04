@@ -18,7 +18,9 @@ class Population(object):
         self.bats = bats
         self.average_loudness = calculate_average_loudness(bats)
         self.fmin, self.fmax = freq_range
-        self.best_solution = sol(bats[random.randint(0, len(bats)-1)])
+
+        bat = bats[random.randint(0, len(bats)-1)]
+        self.gbest = (bat.position, sol(bat))
         self.sol = sol
         self.a = a
         self.g = g
@@ -28,9 +30,9 @@ class Population(object):
         b = random.random()
         for bat in self.bats:
             bat.frequency = self.fmin + (self.fmax - self.fmin)*b
-            bat.velocity = bat.velocity + (bat.position - self.best_solution)*bat.frequency
-            #bat.position = bat.position + bat.velocity
-            bat.fly()
+            bat.velocity = bat.velocity + (bat.position - self.gbest[0])*bat.frequency
+            bat.position = bat.position + bat.velocity
+            #bat.fly()
 
         for bat in self.bats:
             r = random.random()
@@ -40,13 +42,16 @@ class Population(object):
                 pass
 
             r = random.randint(*bat.loudness_range)
-            if r<bat.loudness and self.sol(bat)>self.best_solution:
+            if r<bat.loudness and self.sol(bat)>self.gbest[1]:
                 # blizej rozwiazania, zwiekszamy puls, zmniejszamy glosnosc
                 bat.pulse_rate = bat.pulse_rate*(1-math.exp(-self.g*self.step))
                 bat.loudness = self.a * bat.loudness
 
         # znalezienie najlepszego rozwiazania
-        self.best_solution = max(self.best_solution, max((self.sol(bat) for bat in self.bats)))
+        for bat in self.bats:
+            v = self.sol(bat)
+            if v>self.gbest[1]:
+                self.gbest = (bat.position, v)
 
         # obliczenie sredniej glosnosci populacji
         self.average_loudness = calculate_average_loudness(self.bats)
