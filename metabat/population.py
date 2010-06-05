@@ -38,6 +38,19 @@ class Population(object):
             if r>bat.pulse_rate:
                 # wybor rozwiazania sposrod najlepszych (?)
                 # generowanie lokalnego rozwiazania wokol wybranych najlepszych (?)
+                
+                curr_sol = self.sol(bat)
+                curr_pos = bat.position
+                
+                best = bat.position
+                
+                for i in range (0,4):
+            	    temp = curr_pos + ((random.random()*2)-1)*self.average_loudness
+            	    bat.position = temp
+            	    if self.sol (bat) >curr_sol:
+            		best = temp
+            	
+                
                 pass
 
             r = random.random()
