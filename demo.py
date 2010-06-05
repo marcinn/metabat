@@ -55,7 +55,7 @@ class MetabatApp(object):
                 self.log.get_buffer().set_text(text)
             return wrap
 
-        self.sol = lambda x:math.cos(x.position) * math.exp(math.sin(x.position)) * math.sin(x.position)  / 1.5
+        self.sol = lambda x:math.cos(float(x)) * math.exp(math.sin(float(x))) * math.sin(float(x))  / 1.5
         self.p = population.Population(
             bats=create_population(n=10, position_unit_vector=1),
             freq_range=(0,0.3),
