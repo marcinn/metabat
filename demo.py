@@ -14,6 +14,16 @@ from numpy import arange, sin, pi, cos, exp
 
 class MetabatApp(object):
 
+    # zakres czestotliwosci
+    freq_range = (-0.3, 0.3)
+
+    # stale chlodzace
+    a=0.9
+    g=0.9
+
+    # ilosc nietoperzy
+    n=10
+
     def __init__(self):
 
         self.sol = lambda x:math.cos(float(x)) * math.exp(math.sin(float(x))) * math.sin(float(x))  / 1.5
@@ -62,11 +72,11 @@ class MetabatApp(object):
             return wrap
 
         self.p = population.Population(
-            bats=create_population(n=10, position_unit_vector=1),
-            freq_range=(-0.3,0.3),
+            bats=create_population(n=self.n, position_unit_vector=1),
+            freq_range=self.freq_range,
             sol = self.sol,
-            a=0.9,
-            g=0.9,
+            a=self.a,
+            g=self.g,
             )
         self.p.next = observe(self.p, self.p.next)
         self.p.next()
