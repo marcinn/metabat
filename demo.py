@@ -6,6 +6,12 @@ import math
 from metabat import population
 from metabat.actors import create_population
 
+from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
+from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
+
+from matplotlib.figure import Figure
+from numpy import arange, sin, pi
+
 class MetabatApp(object):
     def __init__(self):
         self.gladefile = 'main.glade'
@@ -16,10 +22,28 @@ class MetabatApp(object):
             self.window.connect('destroy', gtk.main_quit)
         self.canvas = self.wTree.get_widget('canvas')
         self.log = self.wTree.get_widget('log')
+        
+        
+        fig = Figure(figsize=(5,4), dpi=100)
+	ax = fig.add_subplot(111)
+	t = arange(0.0,3.0,0.01)
+	s = sin(2*pi*t)
+
+	ax.plot(t,s)
+
+        self.canvas = FigureCanvas(fig)
+        
+        self.vbox = self.wTree.get_widget('vbox1')
+
+	self.vbox.pack_start(self.canvas)
+	self.toolbar = NavigationToolbar(self.canvas, self.window)
+	self.vbox.pack_start(self.toolbar, False, False)
 
         self.wTree.get_widget('next_step').connect('clicked', self.next_iter)
 
         self.window.show_all()
+        
+        
 
         def observe(population, f):
             def wrap():
@@ -34,7 +58,7 @@ class MetabatApp(object):
         self.sol = lambda x:math.cos(x.position) * math.exp(math.sin(x.position)) * math.sin(x.position)  / 1.5
         self.p = population.Population(
             bats=create_population(n=10, position_unit_vector=1),
-            freq_range=(-0.3,0.3),
+            freq_range=(0,0.3),
             sol = self.sol,
             a=0.9,
             g=0.9,
