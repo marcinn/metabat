@@ -33,7 +33,7 @@ class MetabatApp(object):
 
         self.canvas = FigureCanvas(fig)
         
-        self.vbox = self.wTree.get_widget('vbox1')
+        self.vbox = self.wTree.get_widget('vbox2')
 
 	self.vbox.pack_start(self.canvas)
 	self.toolbar = NavigationToolbar(self.canvas, self.window)
