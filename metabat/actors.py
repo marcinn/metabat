@@ -13,11 +13,11 @@ class Microbat(object):
         """
 
         # pulse emission rate in [0,1] range
-        self.pulse_rate = random.random()/4.0
+        self.pulse_rate = random.random()
         self.initial_pulse_rate = self.pulse_rate
 
         # loudness 
-        self.loudness = random.random()/6.0
+        self.loudness = random.random()
 
         # pulse frequency
         self.frequency = random.random()/4
@@ -40,7 +40,7 @@ class Microbat(object):
                 self.loudness, self.pulse_rate, pbest)
 
 
-def create_population(n, position_unit_vector, species=Microbat):
+def create_population(n, position_unit_vector, rndfactor=1, species=Microbat):
     """
     create population of n-bats with default position pos
     randomized in [0,radius] range
@@ -48,7 +48,7 @@ def create_population(n, position_unit_vector, species=Microbat):
     
     population = []
     for i in xrange(0, n):
-        pos = position_unit_vector * random.random()
+        pos = position_unit_vector * random.random() * rndfactor
         population.append(species(position=pos, velocity=pos*0))
     return population
 
