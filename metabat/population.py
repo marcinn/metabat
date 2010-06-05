@@ -41,17 +41,17 @@ class Population(object):
                 
                 curr_sol = self.sol(bat)
                 curr_pos = bat.position
-                
+                print 'curr_pos: ', curr_pos
                 best = bat.position
                 
                 for i in range (0,4):
-            	    temp = curr_pos + ((random.random()*2)-1)*self.average_loudness
+            	    temp = curr_pos + ((random.random()-1)*2)*self.average_loudness
+            	    print temp
             	    bat.position = temp
             	    if self.sol (bat) >curr_sol:
             		best = temp
-            	
-                
-                pass
+            	bat.position = best
+		#pass
 
             r = random.random()
             if r<bat.loudness and self.sol(bat)>self.gbest[1]:
