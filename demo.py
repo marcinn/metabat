@@ -30,6 +30,7 @@ class MetabatApp(object):
 	s = cos(2*pi*t) * exp (sin(2*pi*t)) * sin(2*pi*t) / 1.5
 
 	ax.plot(t,s)
+        self.ax = ax
 
         self.canvas = FigureCanvas(fig)
         
@@ -65,9 +66,19 @@ class MetabatApp(object):
             )
         self.p.next = observe(self.p, self.p.next)
         self.p.next()
+        self.draw_bats()
+
+    def draw_bats(self):
+        canvas = self.ax.figure.canvas
+        bg = canvas.copy_from_bbox(self.ax.bbox)
+        for bat in self.p.bats:
+            self.ax.plot(bat.position, self.sol(bat.position), 'o')
+        canvas.draw()
+        canvas.restore_region(bg)
 
     def next_iter(self, widget):
         self.p.next()
+        self.draw_bats()
 
 if __name__ == '__main__':
     app = MetabatApp()
