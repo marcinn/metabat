@@ -10,7 +10,7 @@ from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanva
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
 
 from matplotlib.figure import Figure
-from numpy import arange, sin, pi
+from numpy import arange, sin, pi, cos, exp
 
 class MetabatApp(object):
     def __init__(self):
@@ -27,7 +27,7 @@ class MetabatApp(object):
         fig = Figure(figsize=(5,4), dpi=100)
 	ax = fig.add_subplot(111)
 	t = arange(0.0,3.0,0.01)
-	s = sin(2*pi*t)
+	s = cos(2*pi*t) * exp (sin(2*pi*t)) * sin(2*pi*t) / 1.5
 
 	ax.plot(t,s)
 
