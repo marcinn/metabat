@@ -32,10 +32,11 @@ class Microbat(object):
 
 
     def __repr__(self):
-        return '(%s) pos=%s, v=%s, fq=%s, lo=%s, pls=%s' % (
+        pbest = "(%.4f, %.4f)" % self.pbest if self.pbest else None
+        return '(%s) pos=%.4f, v=%.4f, fq=%.4f, lo=%.4f, pls=%.4f, pbest=%s' % (
                 self.__class__.__name__,
                 self.position, self.velocity, self.frequency,
-                self.loudness, self.pulse_rate)
+                self.loudness, self.pulse_rate, pbest)
 
 
 def create_population(n, position_unit_vector, species=Microbat):
