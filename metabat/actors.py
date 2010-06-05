@@ -13,11 +13,11 @@ class Microbat(object):
         """
 
         # pulse emission rate in [0,1] range
-        self.pulse_rate = random.random()
+        self.pulse_rate = random.random()/4.0
         self.initial_pulse_rate = self.pulse_rate
 
         # loudness 
-        self.loudness = random.random()
+        self.loudness = random.random()/6.0
 
         # pulse frequency
         self.frequency = random.random()/4

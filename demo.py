@@ -58,7 +58,7 @@ class MetabatApp(object):
         self.sol = lambda x:math.cos(float(x)) * math.exp(math.sin(float(x))) * math.sin(float(x))  / 1.5
         self.p = population.Population(
             bats=create_population(n=10, position_unit_vector=1),
-            freq_range=(0,0.3),
+            freq_range=(-0.3,0.3),
             sol = self.sol,
             a=0.9,
             g=0.9,
