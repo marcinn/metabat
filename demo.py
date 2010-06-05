@@ -1,5 +1,6 @@
 import pygtk
 import gtk.glade
+import gobject
 
 import math
 import copy
@@ -16,7 +17,7 @@ from numpy import arange, sin, pi, cos, exp
 class MetabatApp(object):
 
     # zakres czestotliwosci
-    freq_range = (0.1, 0.4)
+    freq_range = (0.01, 0.1)
 
     # dziedzina
     df = (-3.0, 4.0)
@@ -62,10 +63,14 @@ class MetabatApp(object):
         self.wTree.get_widget('next_step').connect('clicked', self.next_iter)
         self.wTree.get_widget('btn_play').connect('clicked', self.play)
         self.wTree.get_widget('btn_stop').connect('clicked', self.stop)
+        self.wTree.get_widget('btn_reset').connect('clicked', self.reset)
 
         self.window.show_all()
+        self.initialize()
         
-        
+        self._play = False
+
+    def initialize(self):
 
         def observe(population, f):
             def wrap():
@@ -98,6 +103,8 @@ class MetabatApp(object):
             self.ax.plot(bat.position, self.sol(bat.position), 'o')
             self.ax.text(bat.position, self.sol(bat.position)+0.04,
                     '%s' % i, {'size': 7})
+        self.ax.plot((self.df[0], self.df[0]), (-1,1))
+        self.ax.plot((self.df[1], self.df[1]), (-1,1))
         self.ax.figure.canvas.draw()
 
     def next_iter(self, widget):
@@ -106,14 +113,21 @@ class MetabatApp(object):
 
     def play(self, widget):
         self._play = True
+        gobject.timeout_add(20, self.play_frame)
+
+    def reset(self, widget):
+        self.initialize()
 
     def stop(self, widget):
         self._play = False
 
-    def tick(self):
-        while self._play:
+    def play_frame(self):
+        if self._play:
             self.p.next()
             self.draw_bats()
+            self.log.queue_draw()
+            return True
+        return False
 
     
 
