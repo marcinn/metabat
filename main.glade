@@ -12,7 +12,7 @@
                 <property name="visible">True</property>
                 <child>
                     <widget class="GtkVPaned" id="vpaned1">
-                        <property name="position">266</property>
+                        <property name="position">213</property>
                         <property name="position_set">True</property>
                         <property name="visible">True</property>
                         <child>
@@ -42,10 +42,28 @@
                         <property name="layout_style">end</property>
                         <property name="visible">True</property>
                         <child>
+                            <widget class="GtkButton" id="btn_play">
+                                <property name="label">gtk-media-play</property>
+                                <property name="use_stock">True</property>
+                                <property name="visible">True</property>
+                                <signal handler="btn_play_clicked" name="clicked"/>
+                            </widget>
+                        </child>
+                        <child>
+                            <widget class="GtkButton" id="btn_stop">
+                                <property name="is_focus">True</property>
+                                <property name="label">gtk-stop</property>
+                                <property name="use_stock">True</property>
+                                <property name="visible">True</property>
+                            </widget>
+                            <packing>
+                                <property name="position">1</property>
+                            </packing>
+                        </child>
+                        <child>
                             <widget class="GtkButton" id="next_step">
                                 <property name="can_default">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="has_default">True</property>
                                 <property name="is_focus">True</property>
                                 <property name="label">gtk-media-forward</property>
                                 <property name="use_stock">True</property>
@@ -53,11 +71,192 @@
                                 <property name="xalign">0.0</property>
                                 <signal handler="next_iteration" name="clicked"/>
                             </widget>
+                            <packing>
+                                <property name="position">2</property>
+                            </packing>
                         </child>
                     </widget>
                     <packing>
                         <property name="expand">False</property>
                         <property name="position">1</property>
+                    </packing>
+                </child>
+                <child>
+                    <widget class="GtkHBox" id="hbox1">
+                        <property name="visible">True</property>
+                        <child>
+                            <widget class="GtkVBox" id="vbox3">
+                                <property name="visible">True</property>
+                                <child>
+                                    <widget class="GtkHBox" id="hbox2">
+                                        <property name="visible">True</property>
+                                        <child>
+                                            <widget class="GtkLabel" id="label1">
+                                                <property name="label" context="yes" translatable="yes">Bats num:</property>
+                                                <property name="visible">True</property>
+                                                <property name="xalign">0.0</property>
+                                            </widget>
+                                        </child>
+                                        <child>
+                                            <widget class="GtkSpinButton" id="sb_batsnum">
+                                                <property name="adjustment">0 0 50 1 10 0</property>
+                                                <property name="climb_rate">1.0</property>
+                                                <property name="progress_pulse_step">1.0</property>
+                                                <property name="text" context="yes" translatable="yes">0</property>
+                                                <property name="visible">True</property>
+                                            </widget>
+                                            <packing>
+                                                <property name="position">1</property>
+                                            </packing>
+                                        </child>
+                                    </widget>
+                                </child>
+                                <child>
+                                    <widget class="GtkHBox" id="hbox3">
+                                        <property name="visible">True</property>
+                                        <child>
+                                            <widget class="GtkLabel" id="label2">
+                                                <property name="label" context="yes" translatable="yes">Freq from:</property>
+                                                <property name="visible">True</property>
+                                                <property name="xalign">0.0</property>
+                                            </widget>
+                                        </child>
+                                        <child>
+                                            <widget class="GtkSpinButton" id="sb_freqfrom">
+                                                <property name="adjustment">0 0 100 1 10 0</property>
+                                                <property name="climb_rate">0.01</property>
+                                                <property name="digits">2</property>
+                                                <property name="is_focus">True</property>
+                                                <property name="progress_fraction">0.01</property>
+                                                <property name="text" context="yes" translatable="yes">0,00</property>
+                                                <property name="visible">True</property>
+                                                <property name="xalign">0.0099999998</property>
+                                            </widget>
+                                            <packing>
+                                                <property name="position">1</property>
+                                            </packing>
+                                        </child>
+                                        <child>
+                                            <widget class="GtkLabel" id="label3">
+                                                <property name="label" context="yes" translatable="yes">to:</property>
+                                                <property name="visible">True</property>
+                                                <property name="xalign">0.0</property>
+                                            </widget>
+                                            <packing>
+                                                <property name="position">2</property>
+                                            </packing>
+                                        </child>
+                                        <child>
+                                            <widget class="GtkSpinButton" id="sb_freqto">
+                                                <property name="adjustment">0 0 100 1 10 0</property>
+                                                <property name="digits">2</property>
+                                                <property name="progress_fraction">0.01</property>
+                                                <property name="text" context="yes" translatable="yes">0,00</property>
+                                                <property name="visible">True</property>
+                                            </widget>
+                                            <packing>
+                                                <property name="position">3</property>
+                                            </packing>
+                                        </child>
+                                    </widget>
+                                    <packing>
+                                        <property name="position">1</property>
+                                    </packing>
+                                </child>
+                                <child>
+                                    <widget class="GtkHBox" id="hbox4">
+                                        <property name="visible">True</property>
+                                        <child>
+                                            <widget class="GtkLabel" id="label4">
+                                                <property name="label" context="yes" translatable="yes">Domain from:</property>
+                                                <property name="visible">True</property>
+                                                <property name="xalign">0.0</property>
+                                            </widget>
+                                        </child>
+                                        <child>
+                                            <widget class="GtkSpinButton" id="sb_domainfrom">
+                                                <property name="adjustment">1 -100 100 1 10 0</property>
+                                                <property name="digits">2</property>
+                                                <property name="is_focus">True</property>
+                                                <property name="text" context="yes" translatable="yes">1,00</property>
+                                                <property name="visible">True</property>
+                                            </widget>
+                                            <packing>
+                                                <property name="position">1</property>
+                                            </packing>
+                                        </child>
+                                        <child>
+                                            <widget class="GtkLabel" id="label5">
+                                                <property name="label" context="yes" translatable="yes">to:</property>
+                                                <property name="visible">True</property>
+                                                <property name="xalign">0.0</property>
+                                            </widget>
+                                            <packing>
+                                                <property name="position">2</property>
+                                            </packing>
+                                        </child>
+                                        <child>
+                                            <widget class="GtkSpinButton" id="sp_domainto">
+                                                <property name="adjustment">0 -100 100 1 10 0</property>
+                                                <property name="digits">2</property>
+                                                <property name="text" context="yes" translatable="yes">0,00</property>
+                                                <property name="visible">True</property>
+                                            </widget>
+                                            <packing>
+                                                <property name="position">3</property>
+                                            </packing>
+                                        </child>
+                                    </widget>
+                                    <packing>
+                                        <property name="position">2</property>
+                                    </packing>
+                                </child>
+                            </widget>
+                            <packing>
+                                <property name="expand">False</property>
+                            </packing>
+                        </child>
+                        <child>
+                            <widget class="GtkVBox" id="vbox4">
+                                <property name="visible">True</property>
+                                <child>
+                                    <placeholder/>
+                                    <packing/>
+                                </child>
+                                <child>
+                                    <placeholder/>
+                                    <packing>
+                                        <property name="position">1</property>
+                                    </packing>
+                                </child>
+                                <child>
+                                    <widget class="GtkButton" id="bt_applysettings">
+                                        <property name="label">gtk-apply</property>
+                                        <property name="use_stock">True</property>
+                                        <property name="visible">True</property>
+                                        <property name="xalign">0.0</property>
+                                    </widget>
+                                    <packing>
+                                        <property name="fill">False</property>
+                                        <property name="position">2</property>
+                                    </packing>
+                                </child>
+                            </widget>
+                            <packing>
+                                <property name="expand">False</property>
+                                <property name="position">1</property>
+                            </packing>
+                        </child>
+                        <child>
+                            <placeholder/>
+                            <packing>
+                                <property name="position">2</property>
+                            </packing>
+                        </child>
+                    </widget>
+                    <packing>
+                        <property name="expand">False</property>
+                        <property name="position">2</property>
                     </packing>
                 </child>
             </widget>

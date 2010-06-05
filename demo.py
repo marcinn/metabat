@@ -40,6 +40,7 @@ class MetabatApp(object):
         self.window = self.wTree.get_widget('window')
         if self.window:
             self.window.connect('destroy', gtk.main_quit)
+          
         self.canvas = self.wTree.get_widget('canvas')
         self.log = self.wTree.get_widget('log')
         
@@ -59,6 +60,8 @@ class MetabatApp(object):
         self.vbox.pack_start(self.toolbar, False, False)
 
         self.wTree.get_widget('next_step').connect('clicked', self.next_iter)
+        self.wTree.get_widget('btn_play').connect('clicked', self.play)
+        self.wTree.get_widget('btn_stop').connect('clicked', self.stop)
 
         self.window.show_all()
         
@@ -100,6 +103,19 @@ class MetabatApp(object):
     def next_iter(self, widget):
         self.p.next()
         self.draw_bats()
+
+    def play(self, widget):
+        self._play = True
+
+    def stop(self, widget):
+        self._play = False
+
+    def tick(self):
+        while self._play:
+            self.p.next()
+            self.draw_bats()
+
+    
 
 if __name__ == '__main__':
     app = MetabatApp()
