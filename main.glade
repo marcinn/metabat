@@ -1,0 +1,58 @@
+<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
+<!DOCTYPE glade-interface SYSTEM "http://gazpacho.sicem.biz/gazpacho-0.1.dtd">
+<glade-interface>
+    <widget class="GtkWindow" id="window">
+        <property name="default_height">600</property>
+        <property name="default_width">800</property>
+        <property name="title" context="yes" translatable="yes">Nietoperki</property>
+        <property name="window_position">center</property>
+        <child>
+            <widget class="GtkVBox" id="vbox1">
+                <property name="spacing">4</property>
+                <property name="visible">True</property>
+                <child>
+                    <widget class="GtkVPaned" id="vpaned1">
+                        <property name="position">329</property>
+                        <property name="position_set">True</property>
+                        <property name="visible">True</property>
+                        <child>
+                            <widget class="GtkDrawingArea" id="canvas">
+                                <property name="visible">True</property>
+                            </widget>
+                        </child>
+                        <child>
+                            <widget class="GtkTextView" id="log">
+                                <property name="editable">False</property>
+                                <property name="is_focus">True</property>
+                                <property name="visible">True</property>
+                            </widget>
+                            <packing>
+                                <property name="resize">True</property>
+                            </packing>
+                        </child>
+                    </widget>
+                </child>
+                <child>
+                    <widget class="GtkHButtonBox" id="hbuttonbox1">
+                        <property name="homogeneous">True</property>
+                        <property name="layout_style">end</property>
+                        <property name="visible">True</property>
+                        <child>
+                            <widget class="GtkButton" id="next_step">
+                                <property name="is_focus">True</property>
+                                <property name="label">gtk-media-forward</property>
+                                <property name="use_stock">True</property>
+                                <property name="visible">True</property>
+                                <signal handler="next_iteration" name="clicked"/>
+                            </widget>
+                        </child>
+                    </widget>
+                    <packing>
+                        <property name="expand">False</property>
+                        <property name="position">1</property>
+                    </packing>
+                </child>
+            </widget>
+        </child>
+    </widget>
+</glade-interface>

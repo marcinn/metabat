@@ -27,7 +27,6 @@ class Population(object):
         self.step = 0
         
     def next(self):
-        b = random.random()
         for bat in self.bats:
             v = self.sol(bat)
             # rekord nietoperza
@@ -35,6 +34,7 @@ class Population(object):
                 bat.pbest = (bat.position, v)
             bat.isol = v
 
+            b = random.random()
             bat.frequency = self.fmin + (self.fmax - self.fmin)*b
             bat.velocity = bat.velocity + (bat.position - self.gbest[0])*bat.frequency
             bat.position = bat.position + bat.velocity
