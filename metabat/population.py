@@ -20,7 +20,7 @@ class Population(object):
         self.fmin, self.fmax = freq_range
 
         bat = bats[random.randint(0, len(bats)-1)]
-        self.gbest = (bat.position, sol(float(bat.position)))
+        self.gbest = (bat.position, sol(bat.position))
         self.sol = sol
         self.a = a
         self.g = g
@@ -28,7 +28,7 @@ class Population(object):
         
     def next(self):
         for bat in self.bats:
-            v = self.sol(float(bat.position))
+            v = self.sol(bat.position)
             # rekord nietoperza
             if not bat.pbest or v>bat.pbest[1]:
                 bat.pbest = (bat.position, v)
@@ -46,14 +46,14 @@ class Population(object):
                 # wybor rozwiazania sposrod najlepszych (?)
                 # generowanie lokalnego rozwiazania wokol wybranych najlepszych (?)
                 
-                curr_sol = self.sol(float(bat.position))
+                curr_sol = self.sol(bat.position)
                 curr_pos = bat.position
                 best = bat.position
                 
                 for i in range (0,4):
             	    temp = curr_pos + ((random.random()*2)-1)*self.average_loudness*100
             	    bat.position = temp
-            	    if self.sol (float(bat.position)) >curr_sol:
+            	    if self.sol (bat.position) >curr_sol:
             		best = temp
             	bat.position = best
 
