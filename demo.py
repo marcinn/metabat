@@ -40,20 +40,20 @@ class MetabatApp(object):
         
         
         fig = Figure(figsize=(5,4), dpi=100)
-	ax = fig.add_subplot(111)
-	t = arange(-15.0,15.0,0.01)
-	s = cos(t) * exp (sin(t)) * sin(t) / 1.5
+        ax = fig.add_subplot(111)
+        t = arange(-15.0,15.0,0.01)
+        s = cos(t) * exp (sin(t)) * sin(t) / 1.5
 
-	ax.plot(t,s)
+        ax.plot(t,s)
         self.ax = ax
 
         self.canvas = FigureCanvas(fig)
         
         self.vbox = self.wTree.get_widget('vbox2')
 
-	self.vbox.pack_start(self.canvas)
-	self.toolbar = NavigationToolbar(self.canvas, self.window)
-	self.vbox.pack_start(self.toolbar, False, False)
+        self.vbox.pack_start(self.canvas)
+        self.toolbar = NavigationToolbar(self.canvas, self.window)
+        self.vbox.pack_start(self.toolbar, False, False)
 
         self.wTree.get_widget('next_step').connect('clicked', self.next_iter)
 
