@@ -1,58 +1,77 @@
-<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
-<!DOCTYPE glade-interface SYSTEM "http://gazpacho.sicem.biz/gazpacho-0.1.dtd">
+<?xml version="1.0"?>
 <glade-interface>
-    <widget class="GtkWindow" id="window">
-        <property name="default_height">600</property>
-        <property name="default_width">800</property>
-        <property name="title" context="yes" translatable="yes">Nietoperki</property>
-        <property name="window_position">center</property>
+  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <widget class="GtkWindow" id="window">
+    <property name="title" translatable="yes" context="yes">Nietoperki</property>
+    <property name="window_position">center</property>
+    <property name="default_width">800</property>
+    <property name="default_height">600</property>
+    <child>
+      <widget class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <property name="spacing">4</property>
         <child>
-            <widget class="GtkVBox" id="vbox1">
-                <property name="spacing">4</property>
+          <widget class="GtkVPaned" id="vpaned1">
+            <property name="visible">True</property>
+            <property name="position">329</property>
+            <property name="position_set">True</property>
+            <child>
+              <widget class="GtkDrawingArea" id="canvas">
                 <property name="visible">True</property>
-                <child>
-                    <widget class="GtkVPaned" id="vpaned1">
-                        <property name="position">329</property>
-                        <property name="position_set">True</property>
-                        <property name="visible">True</property>
-                        <child>
-                            <widget class="GtkDrawingArea" id="canvas">
-                                <property name="visible">True</property>
-                            </widget>
-                        </child>
-                        <child>
-                            <widget class="GtkTextView" id="log">
-                                <property name="editable">False</property>
-                                <property name="is_focus">True</property>
-                                <property name="visible">True</property>
-                            </widget>
-                            <packing>
-                                <property name="resize">True</property>
-                            </packing>
-                        </child>
-                    </widget>
-                </child>
-                <child>
-                    <widget class="GtkHButtonBox" id="hbuttonbox1">
-                        <property name="homogeneous">True</property>
-                        <property name="layout_style">end</property>
-                        <property name="visible">True</property>
-                        <child>
-                            <widget class="GtkButton" id="next_step">
-                                <property name="is_focus">True</property>
-                                <property name="label">gtk-media-forward</property>
-                                <property name="use_stock">True</property>
-                                <property name="visible">True</property>
-                                <signal handler="next_iteration" name="clicked"/>
-                            </widget>
-                        </child>
-                    </widget>
-                    <packing>
-                        <property name="expand">False</property>
-                        <property name="position">1</property>
-                    </packing>
-                </child>
-            </widget>
+              </widget>
+              <packing>
+                <property name="resize">False</property>
+                <property name="shrink">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkTextView" id="log">
+                <property name="visible">True</property>
+                <property name="is_focus">True</property>
+                <property name="editable">False</property>
+              </widget>
+              <packing>
+                <property name="resize">True</property>
+                <property name="shrink">True</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">0</property>
+          </packing>
         </child>
-    </widget>
+        <child>
+          <widget class="GtkHButtonBox" id="hbuttonbox1">
+            <property name="visible">True</property>
+            <property name="homogeneous">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <widget class="GtkButton" id="next_step">
+                <property name="label">gtk-media-forward</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="is_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="next_iteration"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </widget>
+    </child>
+  </widget>
 </glade-interface>
