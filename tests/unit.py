@@ -26,10 +26,13 @@ class MetabatPopulation(unittest.TestCase):
         # funkcja wartosciujaca nietoperza
         #self.sol = lambda x: math.sin(x.position*math.pi/180.0)
         self.sol = lambda x:math.cos(x.position) * math.exp(math.sin(x.position)) * math.sin(x.position)  / 1.5
+        #self.sol = lambda x: -1*(x.position-4)*(x.position-2)*(x.position-1)*x.position
         self.p = population.Population(
             bats=create_population(n=10, position_unit_vector=1),
-            freq_range=(0.01,0.3),
+            freq_range=(-0.3,0.3),
             sol = self.sol,
+            a=0.9,
+            g=0.9,
             )
         self.p.next = observe(self.p, self.p.next)
 
