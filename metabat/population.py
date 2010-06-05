@@ -29,13 +29,21 @@ class Population(object):
     def next(self):
         b = random.random()
         for bat in self.bats:
+            v = self.sol(bat)
+            # rekord nietoperza
+            if not bat.pbest or v>bat.pbest[1]:
+                bat.pbest = (bat.position, v)
+            bat.isol = v
+
             bat.frequency = self.fmin + (self.fmax - self.fmin)*b
             bat.velocity = bat.velocity + (bat.position - self.gbest[0])*bat.frequency
             bat.position = bat.position + bat.velocity
 
+
+        r = random.random()
         for bat in self.bats:
-            r = random.random()
             if r>bat.pulse_rate:
+<<<<<<< HEAD
                 # wybor rozwiazania sposrod najlepszych (?)
                 # generowanie lokalnego rozwiazania wokol wybranych najlepszych (?)
                 
@@ -52,24 +60,21 @@ class Population(object):
             		best = temp
             	bat.position = best
 		#pass
+=======
+                rw = random.random()*2-1
+                bat.position = bat.position + rw*self.average_loudness
+>>>>>>> a5b71f2d5da31549d7ea63cf6536d4f2d912d653
 
-            r = random.random()
-            if r<bat.loudness and self.sol(bat)>self.gbest[1]:
+            if r<bat.loudness and bat.isol<self.gbest[1]:
                 # blizej rozwiazania, zwiekszamy puls, zmniejszamy glosnosc
-                bat.pulse_rate = bat.pulse_rate*(1-math.exp(-self.g*self.step))
+                bat.pulse_rate = bat.initial_pulse_rate*(1-math.exp(-self.g*self.step))
                 bat.loudness = self.a * bat.loudness
 
         # znalezienie najlepszego rozwiazania
         for bat in self.bats:
-            v = self.sol(bat)
-
-            # rekord nietoperza
-            if not bat.pbest or v>bat.pbest[1]:
-                bat.pbest = (bat.position, v)
-
             # najlepszy wynik populacji
-            if v>self.gbest[1]:
-                self.gbest = (bat.position, v)
+            if bat.pbest[1]>self.gbest[1]:
+                self.gbest = bat.pbest
 
         # obliczenie sredniej glosnosci populacji
         self.average_loudness = calculate_average_loudness(self.bats)
