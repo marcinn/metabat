@@ -13,7 +13,12 @@ from matplotlib.figure import Figure
 from numpy import arange, sin, pi, cos, exp
 
 class MetabatApp(object):
+
     def __init__(self):
+
+        self.sol = lambda x:math.cos(float(x)) * math.exp(math.sin(float(x))) * math.sin(float(x))  / 1.5
+       
+
         self.gladefile = 'main.glade'
         self.wTree = gtk.glade.XML(self.gladefile)
 
@@ -26,8 +31,8 @@ class MetabatApp(object):
         
         fig = Figure(figsize=(5,4), dpi=100)
 	ax = fig.add_subplot(111)
-	t = arange(0.0,3.0,0.01)
-	s = cos(2*pi*t) * exp (sin(2*pi*t)) * sin(2*pi*t) / 1.5
+	t = arange(-15.0,15.0,0.01)
+	s = cos(t) * exp (sin(t)) * sin(t) / 1.5
 
 	ax.plot(t,s)
         self.ax = ax
@@ -56,7 +61,6 @@ class MetabatApp(object):
                 self.log.get_buffer().set_text(text)
             return wrap
 
-        self.sol = lambda x:math.cos(float(x)) * math.exp(math.sin(float(x))) * math.sin(float(x))  / 1.5
         self.p = population.Population(
             bats=create_population(n=10, position_unit_vector=1),
             freq_range=(-0.3,0.3),
@@ -66,15 +70,16 @@ class MetabatApp(object):
             )
         self.p.next = observe(self.p, self.p.next)
         self.p.next()
+        self.bg = self.ax.figure.canvas.copy_from_bbox(self.ax.bbox)
         self.draw_bats()
 
     def draw_bats(self):
         canvas = self.ax.figure.canvas
-        bg = canvas.copy_from_bbox(self.ax.bbox)
+        canvas.restore_region(self.bg)
         for bat in self.p.bats:
             self.ax.plot(bat.position, self.sol(bat.position), 'o')
         canvas.draw()
-        canvas.restore_region(bg)
+        canvas.blit(self.ax.bbox)
 
     def next_iter(self, widget):
         self.p.next()
