@@ -51,7 +51,7 @@ class Population(object):
                 best = bat.position
                 
                 for i in range (0,4):
-            	    temp = curr_pos + ((random.random()*2)-1)*self.average_loudness*10
+            	    temp = curr_pos + ((random.random()*2)-1)*self.average_loudness*100
             	    bat.position = temp
             	    if self.sol (bat) >curr_sol:
             		best = temp

@@ -20,7 +20,7 @@ class Microbat(object):
         self.loudness = random.random()
 
         # pulse frequency
-        self.frequency = 0
+        self.frequency = random.random()/4
         
         # position
         self.position = position

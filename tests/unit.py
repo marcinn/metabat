@@ -31,7 +31,7 @@ class MetabatPopulation(unittest.TestCase):
 
         self.p = population.Population(
             bats=create_population(n=10, position_unit_vector=1),
-            freq_range=(-0.3,0.3),
+            freq_range=(0,0.25),
             sol = self.sol,
             a=0.9,
             g=0.9,
@@ -40,7 +40,7 @@ class MetabatPopulation(unittest.TestCase):
 
     def test_best_solution(self):
         print self.p.gbest
-        for i in xrange(0,1000):
+        for i in xrange(0,100):
             self.p.next()
         print self.p.gbest
 
