@@ -32,7 +32,6 @@ class Population(object):
             bat.frequency = self.fmin + (self.fmax - self.fmin)*b
             bat.velocity = bat.velocity + (bat.position - self.gbest[0])*bat.frequency
             bat.position = bat.position + bat.velocity
-            #bat.fly()
 
         for bat in self.bats:
             r = random.random()

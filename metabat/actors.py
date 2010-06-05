@@ -67,18 +67,21 @@ class Microbat(object):
         self.position = self.position + self.velocity
 
     def __repr__(self):
-        return '(%s) x=%s, v=%s, f=%s, l=%s, p=%s' % (
+        return '(%s) pos=%s, v=%s, fq=%s, lo=%s, pls=%s' % (
                 self.__class__.__name__,
                 self.position, self.velocity, self._frequency,
                 self._loudness, self.pulse_rate)
 
 
-def create_population(n, initial_position, species=Microbat):
+def create_population(n, position_unit_vector, species=Microbat):
     """
     create population of n-bats with default position pos
     randomized in [0,radius] range
     """
-
-    return [species(position=initial_position, velocity=initial_position*0) \
-            for i in xrange(0, n)]
+    
+    population = []
+    for i in xrange(0, n):
+        pos = position_unit_vector * random.random()
+        population.append(species(position=pos, velocity=pos*0))
+    return population
 
