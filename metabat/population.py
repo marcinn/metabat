@@ -40,7 +40,7 @@ class Population(object):
                 # generowanie lokalnego rozwiazania wokol wybranych najlepszych (?)
                 pass
 
-            r = random.randint(*bat.loudness_range)
+            r = random.random()
             if r<bat.loudness and self.sol(bat)>self.gbest[1]:
                 # blizej rozwiazania, zwiekszamy puls, zmniejszamy glosnosc
                 bat.pulse_rate = bat.pulse_rate*(1-math.exp(-self.g*self.step))
@@ -49,6 +49,12 @@ class Population(object):
         # znalezienie najlepszego rozwiazania
         for bat in self.bats:
             v = self.sol(bat)
+
+            # rekord nietoperza
+            if not bat.pbest or v>bat.pbest[1]:
+                bat.pbest = (bat.position, v)
+
+            # najlepszy wynik populacji
             if v>self.gbest[1]:
                 self.gbest = (bat.position, v)
 
