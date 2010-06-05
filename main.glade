@@ -43,10 +43,14 @@
                         <property name="visible">True</property>
                         <child>
                             <widget class="GtkButton" id="btn_reset">
+                                <property name="is_focus">True</property>
                                 <property name="label">gtk-home</property>
                                 <property name="use_stock">True</property>
                                 <property name="visible">True</property>
                             </widget>
+                            <packing>
+                                <property name="fill">True</property>
+                            </packing>
                         </child>
                         <child>
                             <placeholder/>
@@ -214,7 +218,7 @@
                                             </packing>
                                         </child>
                                         <child>
-                                            <widget class="GtkSpinButton" id="sp_domainto">
+                                            <widget class="GtkSpinButton" id="sb_domainto">
                                                 <property name="adjustment">0 -100 100 1 10 0</property>
                                                 <property name="digits">2</property>
                                                 <property name="text" context="yes" translatable="yes">0,00</property>

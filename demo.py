@@ -64,14 +64,20 @@ class MetabatApp(object):
         self.wTree.get_widget('btn_play').connect('clicked', self.play)
         self.wTree.get_widget('btn_stop').connect('clicked', self.stop)
         self.wTree.get_widget('btn_reset').connect('clicked', self.reset)
+        self.wTree.get_widget('sb_batsnum').set_value(self.n)
+        self.wTree.get_widget('sb_freqfrom').set_value(self.freq_range[0])
+        self.wTree.get_widget('sb_freqto').set_value(self.freq_range[1])
+        self.wTree.get_widget('sb_domainfrom').set_value(self.df[0])
+        self.wTree.get_widget('sb_domainto').set_value(self.df[1])
+        self.wTree.get_widget('bt_applysettings').connect('clicked', self.change_config)
 
         self.window.show_all()
         self.initialize()
         
-        self._play = False
 
     def initialize(self):
 
+        self._play = False
         def observe(population, f):
             def wrap():
                 f()
@@ -98,13 +104,13 @@ class MetabatApp(object):
 
     def draw_bats(self):
         self.ax.clear()
-        self.ax.plot(self._figarrange, self._figfunc)
+        self.ax.plot((self.df[0], self.df[0]), (-1,1), color="red")
+        self.ax.plot((self.df[1], self.df[1]), (-1,1), color="red")
+        self.ax.plot(self._figarrange, self._figfunc, color="blue")
         for i, bat in enumerate(self.p.bats):
             self.ax.plot(bat.position, self.sol(bat.position), 'o')
             self.ax.text(bat.position, self.sol(bat.position)+0.04,
                     '%s' % i, {'size': 7})
-        self.ax.plot((self.df[0], self.df[0]), (-1,1))
-        self.ax.plot((self.df[1], self.df[1]), (-1,1))
         self.ax.figure.canvas.draw()
 
     def next_iter(self, widget):
@@ -129,6 +135,15 @@ class MetabatApp(object):
             return True
         return False
 
+    def change_config(self, widget):
+        self.n = int(self.wTree.get_widget('sb_batsnum').get_value())
+        self.freq_range=self.wTree.get_widget('sb_freqfrom').get_value(),\
+                self.wTree.get_widget('sb_freqto').get_value()
+        self.df=self.wTree.get_widget('sb_domainfrom').get_value(),\
+                self.wTree.get_widget('sb_domainto').get_value()
+                
+        self.wTree.get_widget('sb_freqto').set_value(self.freq_range[1])
+        self.initialize()
     
 
 if __name__ == '__main__':
