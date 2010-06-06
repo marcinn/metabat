@@ -22,10 +22,11 @@ class Population(object):
         for b in bats:
             b.frequency = self.fmin + (self.fmax - self.fmin)*random.random()
             b.position = df[0] + (df[1]-df[0])*random.random()
-            b.loudness = random.random()+1
+            b.loudness = random.uniform(1,2)
 
         bat = bats[random.randint(0, len(bats)-1)]
         self.gbest = (bat.position, sol(bat.position))
+        self.pbest = (bat.position, sol(bat.position))
         self.sol = sol
         self.a = a
         self.g = g
@@ -39,51 +40,53 @@ class Population(object):
             bat.position += distance
             return distance
         return None
-        
-    def next(self):
-        for bat in self.bats:
-            v = self.sol(bat.position)
-            # rekord nietoperza
-            if not bat.pbest or v>bat.pbest[1]:
-                bat.pbest = (bat.position, v)
-            bat.isol = v
 
-            b = random.random()
+    def update_velocity(self):
+        for bat in self.bats:
+            # rekord nietoperza
+            #if not bat.pbest or v>bat.pbest[1]:
+            #    bat.pbest = (bat.position, v)
+            #v = self.sol(bat.position)
+            #bat.isol = v
+
+            #b = random.random()
             #bat.frequency = self.fmin + (self.fmax - self.fmin)*b
             bat.velocity += (bat.position - self.gbest[0])*bat.frequency
+        
+    def next(self):
+        self.update_velocity()
+        r = random.uniform(0,1)
+        for bat in self.bats:
+            # move bat
             if not self.move_bat(bat, bat.velocity):
                 bat.velocity = -1 * bat.velocity
 
         for bat in self.bats:
-            r = random.random()
+            r = random.uniform(0,1)
             if r<bat.pulse_rate:
                 # wybor rozwiazania sposrod najlepszych (?)
                 # generowanie lokalnego rozwiazania wokol wybranych najlepszych (?)
-                """
-                for friend in self.bats:
-                    if friend.pulse_rate>bat.pulse_rate:
-                        bat.velocity += (bat.position - friend.position)*bat.frequency
-                        self.move_bat(bat, bat.velocity)
-                if bat.pbest[1] < bat.isol:
-                    bat.velocity = -1 * bat.velocity
-                    bat.pulse_rate *= self.a
-                else:
-                    self.move_bat(bat, (random.random()*2-1)*self.average_loudness)
-                """
-                pass
+                bats = self.bats[:]
+                bats.sort(lambda a,b: cmp(a.pulse_rate, b.pulse_rate), reverse=True)
+                bat.velocity += (bat.position - bats[0].position)*bat.frequency
+            else:
+                self.move_bat(bat, self.average_loudness*random.uniform(-1,1))
 
-            r = random.random()
+            r = random.uniform(0,1)
             if r<bat.loudness and self.sol(bat.position)<self.gbest[1]:
                 # blizej rozwiazania, zwiekszamy puls, zmniejszamy glosnosc
                 bat.pulse_rate = bat.initial_pulse_rate*(1-math.exp(-self.g*self.step))
                 bat.loudness = self.a * bat.loudness
 
-        # znalezienie najlepszego rozwiazania
-        for bat in self.bats:
-            # najlepszy wynik populacji
-            if bat.pbest[1]>self.gbest[1]:
-                self.gbest = bat.pbest
+        bats = self.bats[:]
+        bats.sort(lambda a,b: cmp(self.sol(a.position), self.sol(b.position)), reverse=True)
+        self.pbest = bats[0].position, self.sol(bats[0].position)
+
+        if self.pbest[1] > self.gbest[1]:
+            self.gbest = self.pbest[:]
         
+        #for bat in self.bats:
+        #    bat.frequency = bat.pulse_rate*bat.frequency
 
         # obliczenie sredniej glosnosci populacji
         self.average_loudness = calculate_average_loudness(self.bats)

@@ -32,7 +32,6 @@ class MetabatApp(object):
 
     def __init__(self):
 
-        self.sol = lambda x:math.cos(float(x)) * math.exp(math.sin(float(x))) * math.sin(float(x))  / 1.5
        
 
         self.gladefile = 'main.glade'
@@ -50,7 +49,11 @@ class MetabatApp(object):
         self.ax = fig.add_subplot(111)
         self._figarrange = arange(-15.0,15.0,0.01)
         t = self._figarrange
+
+        #self.sol = lambda x:-6*(x*x)+0.3*x+1.5
+        self.sol = lambda x:math.cos(float(x)) * math.exp(math.sin(float(x))) * math.sin(float(x))  / 1.5
         self._figfunc = cos(t) * exp (sin(t)) * sin(t) / 1.5
+        #self._figfunc = -6*(t*t)+0.3*t+1.5
 
         self.canvas = FigureCanvas(fig)
         
@@ -70,6 +73,7 @@ class MetabatApp(object):
         self.wTree.get_widget('sb_domainfrom').set_value(self.df[0])
         self.wTree.get_widget('sb_domainto').set_value(self.df[1])
         self.wTree.get_widget('bt_applysettings').connect('clicked', self.change_config)
+        self.statusbar = self.wTree.get_widget('statusbar')
 
         self.window.show_all()
         self.initialize()
@@ -86,6 +90,9 @@ class MetabatApp(object):
                     text += "  [%d] = %s\n" % (i, bat)
                 text += "  gbest: %s\n" % str(population.gbest)
                 self.log.get_buffer().set_text(text)
+                ctx = self.statusbar.get_context_id('global')
+                self.statusbar.push(ctx, 'Avg loudness: %.4f   pbest: %s   gbest: %s' % \
+                        (population.average_loudness, str(population.pbest), str(population.gbest)))
             return wrap
 
         bats = create_population(n=self.n, position_unit_vector=1, rndfactor=6)
@@ -119,7 +126,7 @@ class MetabatApp(object):
 
     def play(self, widget):
         self._play = True
-        gobject.timeout_add(20, self.play_frame)
+        gobject.timeout_add(60, self.play_frame)
 
     def reset(self, widget):
         self.initialize()
