@@ -86,6 +86,7 @@
                             <widget class="GtkButton" id="next_step">
                                 <property name="can_default">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="has_default">True</property>
                                 <property name="is_focus">True</property>
                                 <property name="label">gtk-media-forward</property>
                                 <property name="use_stock">True</property>
@@ -172,6 +173,7 @@
                                             <widget class="GtkSpinButton" id="sb_freqto">
                                                 <property name="adjustment">0 0 100 1 10 0</property>
                                                 <property name="digits">2</property>
+                                                <property name="is_focus">True</property>
                                                 <property name="progress_fraction">0.01</property>
                                                 <property name="text" context="yes" translatable="yes">0,00</property>
                                                 <property name="visible">True</property>
