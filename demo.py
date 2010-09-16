@@ -21,7 +21,7 @@ FUNC = lambda x: noise.pnoise2((x*0.55)+(0.4*x*math.sin(float(x))), (x*0.2+0.4))
 class MetabatApp(object):
 
     # zakres czestotliwosci
-    freq_range = (0.01, 0.1)
+    freq_range = (0.5, 1.5)
 
     # dziedzina
     df = (-3.0, 24.0)
@@ -31,7 +31,7 @@ class MetabatApp(object):
     g=0.9
 
     # ilosc nietoperzy
-    n=4
+    n=8
 
     def __init__(self, func):
 
