@@ -12,7 +12,7 @@ from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanva
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
 
 from matplotlib.figure import Figure
-from numpy import arange, sin, pi, cos, exp
+from numpy import arange, sin, pi, cos, exp, power, ndarray, array
 
 
 FUNC = lambda t: (cos(t) * exp (sin(t)) * sin(t)) / 1.5
@@ -35,8 +35,6 @@ class MetabatApp(object):
 
     def __init__(self, func):
 
-       
-
         self.gladefile = 'main.glade'
         self.wTree = gtk.glade.XML(self.gladefile)
 
@@ -53,12 +51,8 @@ class MetabatApp(object):
         self._figarrange = arange(-15.0,15.0,0.01)
         t = self._figarrange
 
-        #self.sol = lambda x:-6*(x*x)+0.3*x+1.5
-
-        self.sol = lambda x: func(x)
-        self._figfunc = func(t)
-        
-        #self._figfunc = -6*(t*t)+0.3*t+1.5
+        self.sol = func
+        self._figfunc = array([func(i) for i in t])
 
         self.canvas = FigureCanvas(fig)
         
