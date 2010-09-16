@@ -14,6 +14,9 @@ from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as Navig
 from matplotlib.figure import Figure
 from numpy import arange, sin, pi, cos, exp
 
+
+FUNC = lambda t: (cos(t) * exp (sin(t)) * sin(t)) / 1.5
+
 class MetabatApp(object):
 
     # zakres czestotliwosci
@@ -30,7 +33,7 @@ class MetabatApp(object):
     n=4
 
 
-    def __init__(self):
+    def __init__(self, func):
 
        
 
@@ -51,8 +54,10 @@ class MetabatApp(object):
         t = self._figarrange
 
         #self.sol = lambda x:-6*(x*x)+0.3*x+1.5
-        self.sol = lambda x:math.cos(float(x)) * math.exp(math.sin(float(x))) * math.sin(float(x))  / 1.5
-        self._figfunc = cos(t) * exp (sin(t)) * sin(t) / 1.5
+
+        self.sol = lambda x: func(x)
+        self._figfunc = func(t)
+        
         #self._figfunc = -6*(t*t)+0.3*t+1.5
 
         self.canvas = FigureCanvas(fig)
@@ -154,5 +159,5 @@ class MetabatApp(object):
     
 
 if __name__ == '__main__':
-    app = MetabatApp()
+    app = MetabatApp(FUNC)
     gtk.main()
