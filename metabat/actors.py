@@ -15,6 +15,7 @@ class Microbat(object):
         # pulse emission rate in [0,1] range
         self.pulse_rate = random.random()
         self.initial_pulse_rate = self.pulse_rate
+        self.fitness = 0
 
         # loudness 
         self.loudness = random.random()
@@ -33,11 +34,10 @@ class Microbat(object):
 
 
     def __repr__(self):
-        pbest = "(%.4f, %.4f)" % self.pbest if self.pbest else None
-        return '(%s) pos=%.4f, v=%.4f, fq=%.4f, lo=%.4f, pls=%.4f, pbest=%s' % (
+        return '(%s) pos=%.4f, v=%.4f, fq=%.4f, lo=%.4f, pls=%.4f, fitness=%s' % (
                 self.__class__.__name__,
                 self.position, self.velocity, self.frequency,
-                self.loudness, self.pulse_rate, pbest)
+                self.loudness, self.pulse_rate, self.fitness)
 
 
 def create_population(n, position_unit_vector, rndfactor=1, species=Microbat):

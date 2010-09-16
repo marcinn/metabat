@@ -24,7 +24,7 @@ class MetabatApp(object):
     freq_range = (0.01, 0.1)
 
     # dziedzina
-    df = (-3.0, 4.0)
+    df = (-3.0, 24.0)
 
     # stale chlodzace
     a=0.9
@@ -32,10 +32,10 @@ class MetabatApp(object):
 
     # ilosc nietoperzy
     n=4
-    figure_range = (-15.0,15.0,0.01)
 
     def __init__(self, func):
 
+        self.figure_range = (self.df[0]-3, self.df[1]+3, 0.01)
         self.gladefile = 'main.glade'
         self.wTree = gtk.glade.XML(self.gladefile)
 

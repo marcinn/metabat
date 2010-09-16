@@ -22,7 +22,7 @@ class Population(object):
         for b in bats:
             b.frequency = self.fmin + (self.fmax - self.fmin)*random.random()
             b.position = df[0] + (df[1]-df[0])*random.random()
-            b.loudness = random.uniform(1,2)
+            b.loudness = random.uniform(0,1)
 
         bat = bats[random.randint(0, len(bats)-1)]
         self.gbest = (bat.position, sol(bat.position))
@@ -38,56 +38,61 @@ class Population(object):
         if bat.position + distance < self.df[1] and \
                 bat.position + distance > self.df[0]:
             bat.position += distance
-            return distance
+            return True
         return None
 
     def update_velocity(self):
         for bat in self.bats:
-            # rekord nietoperza
-            #if not bat.pbest or v>bat.pbest[1]:
-            #    bat.pbest = (bat.position, v)
-            #v = self.sol(bat.position)
-            #bat.isol = v
+            b = random.uniform(0,1.0)
+            f_i = self.fmin+(self.fmax-self.fmin)*b
+            phi = random.uniform(0,0.3)
+            phi2= random.uniform(0,0.6)
+            bat.velocity = bat.pulse_rate*bat.velocity + (self.gbest[0]-bat.position)*self.average_loudness
+            #bat.velocity = bat.pulse_rate*bat.velocity+phi*(self.pbest[0]-bat.position)+phi2*(self.gbest[0]-bat.position)
 
-            #b = random.random()
-            #bat.frequency = self.fmin + (self.fmax - self.fmin)*b
-            bat.velocity += (bat.position - self.gbest[0])*bat.frequency
-        
-    def next(self):
-        self.update_velocity()
-        r = random.uniform(0,1)
+    def move_bats(self):
         for bat in self.bats:
-            # move bat
             if not self.move_bat(bat, bat.velocity):
-                bat.velocity = -1 * bat.velocity
+                bat.velocity = -1*bat.velocity
+
+    def evaluate(self):
+        r = random.uniform(0,1)
 
         for bat in self.bats:
-            r = random.uniform(0,1)
-            if r<bat.pulse_rate:
                 # wybor rozwiazania sposrod najlepszych (?)
                 # generowanie lokalnego rozwiazania wokol wybranych najlepszych (?)
-                bats = self.bats[:]
-                bats.sort(lambda a,b: cmp(a.pulse_rate, b.pulse_rate), reverse=True)
-                bat.velocity += (bat.position - bats[0].position)*bat.frequency
-            else:
-                self.move_bat(bat, self.average_loudness*random.uniform(-1,1))
+                #b = random.uniform(0,1)
+                #bat.velocity += (bat.position - self.gbest[0])*(self.fmin+(self.fmax-self.fmin)*b)
+            bat.velocity = self.average_loudness*bat.velocity + (self.gbest[0]-bat.position)*bat.pulse_rate
+            bat.fitness = self.sol(bat.position)
 
-            r = random.uniform(0,1)
-            if r<bat.loudness and self.sol(bat.position)<self.gbest[1]:
+        bats = self.bats[:]
+        bats.sort(lambda a,b: cmp(a.fitness, b.fitness), reverse=True)
+        lbest = bats[0].position, bats[0].fitness
+
+        for bat in self.bats:
+            if bat.fitness>lbest[1]:
                 # blizej rozwiazania, zwiekszamy puls, zmniejszamy glosnosc
                 bat.pulse_rate = bat.initial_pulse_rate*(1-math.exp(-self.g*self.step))
                 bat.loudness = self.a * bat.loudness
+        
+    def next(self):
+
+        #self.update_velocity()
+        self.move_bats()
+        self.evaluate()
 
         bats = self.bats[:]
-        bats.sort(lambda a,b: cmp(self.sol(a.position), self.sol(b.position)), reverse=True)
+        bats.sort(lambda a,b: cmp(a.fitness, b.fitness), reverse=True)
         self.pbest = bats[0].position, self.sol(bats[0].position)
+
+        bat = bats[0]
+        bat.pulse_rate = bat.initial_pulse_rate*(1-math.exp(-self.g*self.step))
+        bat.loudness = self.a * bat.loudness
 
         if self.pbest[1] > self.gbest[1]:
             self.gbest = self.pbest[:]
         
-        #for bat in self.bats:
-        #    bat.frequency = bat.pulse_rate*bat.frequency
-
         # obliczenie sredniej glosnosci populacji
         self.average_loudness = calculate_average_loudness(self.bats)
 
