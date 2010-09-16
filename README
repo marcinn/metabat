@@ -7,6 +7,8 @@ Research project currently only for education purposes
 Installation
 ------------
 
+    easy_install numpy
+    easy_install noise
 
     git clone git://github.com/marcinn/metabat.git
     cd metabat

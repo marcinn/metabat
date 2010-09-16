@@ -12,10 +12,11 @@ from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanva
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
 
 from matplotlib.figure import Figure
-from numpy import arange, sin, pi, cos, exp, power, ndarray, array
+from numpy import arange, array
 
+import noise
 
-FUNC = lambda t: (cos(t) * exp (sin(t)) * sin(t)) / 1.5
+FUNC = lambda x: noise.pnoise2((x*0.55)+(0.4*x*math.sin(float(x))), (x*0.2+0.4))*20*math.sin(float(x))
 
 class MetabatApp(object):
 
@@ -31,7 +32,7 @@ class MetabatApp(object):
 
     # ilosc nietoperzy
     n=4
-
+    figure_range = (-15.0,15.0,0.01)
 
     def __init__(self, func):
 
@@ -48,7 +49,7 @@ class MetabatApp(object):
         
         fig = Figure(figsize=(5,4), dpi=100)
         self.ax = fig.add_subplot(111)
-        self._figarrange = arange(-15.0,15.0,0.01)
+        self._figarrange = arange(*self.figure_range)
         t = self._figarrange
 
         self.sol = func
@@ -110,13 +111,17 @@ class MetabatApp(object):
 
     def draw_bats(self):
         self.ax.clear()
-        self.ax.plot((self.df[0], self.df[0]), (-1,1), color="red")
-        self.ax.plot((self.df[1], self.df[1]), (-1,1), color="red")
+        self.ax.plot((self.df[0], self.df[0]), (-10,10), color="red")
+        self.ax.plot((self.df[1], self.df[1]), (-10,10), color="red")
         self.ax.plot(self._figarrange, self._figfunc, color="blue")
         for i, bat in enumerate(self.p.bats):
             self.ax.plot(bat.position, self.sol(bat.position), 'o')
             self.ax.text(bat.position, self.sol(bat.position)+0.04,
                     '%s' % i, {'size': 7})
+
+        # draw big dbest point
+        if self.p.gbest:
+            self.ax.plot(self.p.gbest[0], self.p.gbest[1]+1, 'v', color="red")
         self.ax.figure.canvas.draw()
 
     def next_iter(self, widget):
@@ -147,6 +152,11 @@ class MetabatApp(object):
                 self.wTree.get_widget('sb_freqto').get_value()
         self.df=self.wTree.get_widget('sb_domainfrom').get_value(),\
                 self.wTree.get_widget('sb_domainto').get_value()
+        new_arange = min(self.df[0], self.figure_range[0]), max(self.df[1], self.figure_range[1])
+
+        # rearrange figure based on new df
+        self._figarrange = arange(new_arange[0], new_arange[1], self.figure_range[2])
+        self._figfunc = array([self.sol(i) for i in self._figarrange])
                 
         self.wTree.get_widget('sb_freqto').set_value(self.freq_range[1])
         self.initialize()
