@@ -23,6 +23,7 @@ class Population(object):
             b.frequency = self.fmin + (self.fmax - self.fmin)*random.random()
             b.position = df[0] + (df[1]-df[0])*random.random()
             b.loudness = random.uniform(0,1)
+            b.pulse_rate = random.uniform(0,0.2)
 
         bat = bats[random.randint(0, len(bats)-1)]
         self.gbest = (bat.position, sol(bat.position))
@@ -43,12 +44,16 @@ class Population(object):
 
     def update_velocity(self):
         for bat in self.bats:
-            b = random.uniform(0,1.0)
-            f_i = self.fmin+(self.fmax-self.fmin)*b
-            phi = random.uniform(0,0.3)
-            phi2= random.uniform(0,0.6)
-            bat.velocity = bat.pulse_rate*bat.velocity + (self.gbest[0]-bat.position)*self.average_loudness
+            #b = random.uniform(0,1.0)
+            #f_i = self.fmin+(self.fmax-self.fmin)*b
+            #phi = random.uniform(0,0.3)
+            #phi2= random.uniform(0,0.6)
+            #bat.velocity = bat.pulse_rate*bat.velocity + (self.gbest[0]-bat.position)*self.average_loudness
             #bat.velocity = bat.pulse_rate*bat.velocity+phi*(self.pbest[0]-bat.position)+phi2*(self.gbest[0]-bat.position)
+            #bat.velocity += (self.gbest[0]-bat.position)*bat.frequency
+
+            # calkowicie zmieniony wzor
+            bat.velocity = self.average_loudness*bat.velocity + (self.gbest[0]-bat.position)*bat.pulse_rate
 
     def move_bats(self):
         for bat in self.bats:
@@ -63,7 +68,6 @@ class Population(object):
                 # generowanie lokalnego rozwiazania wokol wybranych najlepszych (?)
                 #b = random.uniform(0,1)
                 #bat.velocity += (bat.position - self.gbest[0])*(self.fmin+(self.fmax-self.fmin)*b)
-            bat.velocity = self.average_loudness*bat.velocity + (self.gbest[0]-bat.position)*bat.pulse_rate
             bat.fitness = self.sol(bat.position)
 
         bats = self.bats[:]
@@ -71,14 +75,21 @@ class Population(object):
         lbest = bats[0].position, bats[0].fitness
 
         for bat in self.bats:
-            if bat.fitness>lbest[1]:
+            # random fly
+            b = random.uniform(-1,1)
+            self.move_bat(bat, b*self.average_loudness)
+            new_fitness = self.sol(bat.position)
+            # if new solution is better, accept it
+            if new_fitness>bat.fitness:
+                bat.fitness = new_fitness
+            #if bat.fitness>lbest[1]:
                 # blizej rozwiazania, zwiekszamy puls, zmniejszamy glosnosc
                 bat.pulse_rate = bat.initial_pulse_rate*(1-math.exp(-self.g*self.step))
                 bat.loudness = self.a * bat.loudness
         
     def next(self):
 
-        #self.update_velocity()
+        self.update_velocity()
         self.move_bats()
         self.evaluate()
 
