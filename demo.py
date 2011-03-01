@@ -1,3 +1,4 @@
+#!bin/python
 import pygtk
 import gtk.glade
 import gobject
